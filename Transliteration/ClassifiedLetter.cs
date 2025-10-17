@@ -4,47 +4,57 @@
 /// Представляет классифицированный символ с указанием его типа и значения.
 /// Используется для передачи информации о символах в процессе лексического анализа.
 /// </summary>
-public readonly struct ClassifiedLetter
+public readonly struct ClassifiedLetter : IClassifiedLetter
 {
+    // Символы начала и конца комментариев.
+    private const char commentStart = '{';
+    private const char commentEnd = '}';
+
     // Допустимые символы для классификации
-    private readonly  HashSet<char> validLetters = new() { 'a', 'b', 'c', 'd'};
-    private readonly HashSet<char> validDigits = new() { '0', '1' };
+    private readonly  HashSet<char> validLetters = ['a', 'b', 'c', 'd'];
+    private readonly HashSet<char> validDigits = ['0', '1'];
 
     /// <summary>
     /// Символьное значение.
     /// </summary>
-    public readonly char Value;
+    private readonly char value;
 
     /// <summary>
     /// Тип символа согласно классификации.
     /// </summary>
-    public readonly LetterType Type;
+    private readonly LetterType type;
+
+    public string Value => value.ToString();
+
+    public LetterType Type => type;
 
     /// <summary>
     /// Инициализирует новый экземпляр структуры как маркер конца текста.
     /// </summary>
-    public ClassifiedLetter() => Type = LetterType.EndOfText;
+    public ClassifiedLetter() => type = LetterType.EndOfText;
 
     /// <summary>
     /// Инициализирует новый экземпляр структуры с указанным символом и определяет его тип.
     /// </summary>
     public ClassifiedLetter(char value)
     {
-        Value = value;
+        this.value = value;
 
         // Классификация символа по приоритету
         if (validLetters.Contains(value))
-            Type = LetterType.ValidLetter;
+            type = LetterType.ValidLetter;
         else if (validDigits.Contains(value))
-            Type = LetterType.ValidDigit;
+            type = LetterType.ValidDigit;
         else if (value == '\n')
-            Type = LetterType.EndOfLine;
+            type = LetterType.EndOfLine;
         else if (value == ' ')
-            Type = LetterType.Space;
-        else if (value == '}' || value == '{')
-            Type = LetterType.Reserved;
+            type = LetterType.Space;
+        else if (value == commentStart)
+            type = LetterType.CommentStart;
+        else if (value == commentEnd)
+            type = LetterType.CommentEnd;
         else
-            Type = LetterType.Other;
+            type = LetterType.Other;
     }
 
     public override readonly bool Equals(object? obj)
@@ -69,15 +79,4 @@ public readonly struct ClassifiedLetter
         return !(left == right);
     }
 }
-
-public enum LetterType
-{
-    ValidLetter,    // Допустимая буква.
-    ValidDigit,     // Допустимая цифра.
-    Space,     // Пробел.
-    Reserved,  // Зарезервированный.
-    Other,     // Другой.
-    EndOfText,  // Конец текста.
-    EndOfLine   // Конец строки.
-};
 

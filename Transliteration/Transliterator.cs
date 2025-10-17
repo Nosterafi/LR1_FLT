@@ -4,7 +4,7 @@
 /// Реализация транслитератора для последовательного чтения и классификации символов из текста.
 /// Обеспечивает посимвольный анализ текста с автоматическим переходом между строками.
 /// </summary>
-public class Transliterator : ITransliterator
+public class Transliterator : ITransliterator<ClassifiedLetter>
 {
     private string text = string.Empty;
     private int actualIndex = 0;

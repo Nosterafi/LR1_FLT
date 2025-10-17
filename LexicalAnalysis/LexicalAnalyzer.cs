@@ -9,10 +9,7 @@ namespace LexicalAnalysis
     /// </summary>
     public class LexicalAnalyzer
     {
-        private readonly  ClassifiedLetter startComment = new('{');
-        private readonly ClassifiedLetter endComment = new('}');
-
-        private readonly ITransliterator transliterator = new Transliterator();
+        private readonly ITransliterator<ClassifiedLetter> transliterator = new Transliterator();
         private ClassifiedLetter curLetter;
 
         /// <summary>
@@ -101,7 +98,9 @@ namespace LexicalAnalysis
                 SkipComment();
                 SkipEnters();
             }
-            while (curLetter.Type == LetterType.Space || curLetter.Type == LetterType.Reserved);
+            while (curLetter.Type == LetterType.Space || 
+            curLetter.Type == LetterType.CommentStart ||
+            curLetter.Type == LetterType.CommentEnd);
         }
 
         /// <summary>
@@ -118,14 +117,14 @@ namespace LexicalAnalysis
         /// </summary>
         private void SkipComment()
         {
-            if (!curLetter.Equals(startComment))
+            if (curLetter.Type != LetterType.CommentStart)
                 return;
 
             var beginLineIndex = transliterator.CurLineIndex;
             var beginSumIndex = transliterator.CurSumIndex;
 
             // Чтение содержимого комментария до закрывающей скобки
-            while (!curLetter.Equals(endComment))
+            while (curLetter.Type != LetterType.CommentEnd)
             {
                 curLetter = transliterator.GetNextLetter();
 

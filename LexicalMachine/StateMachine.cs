@@ -11,7 +11,7 @@ public class StateMachine
     /// <summary>
     /// Классифицированные символы, для которых применим данный автомат.
     /// </summary>
-    private readonly HashSet<ClassifiedLetter> applicableLetters;
+    private readonly HashSet<IClassifiedLetter> applicableLetters;
 
     /// <summary>
     /// Начальное состояние конечного автомата.
@@ -26,7 +26,7 @@ public class StateMachine
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="StateMachine"/>.
     /// </summary>
-    public StateMachine(State initialState, TokenKind tokenType, HashSet<ClassifiedLetter> applicableLetters)
+    public StateMachine(State initialState, TokenKind tokenType, HashSet<IClassifiedLetter> applicableLetters)
     {
         ArgumentNullException.ThrowIfNull(initialState, nameof(initialState));
         ArgumentNullException.ThrowIfNull(applicableLetters, nameof(applicableLetters));
@@ -39,6 +39,6 @@ public class StateMachine
     /// <summary>
     /// Проверяет, применим ли данный автомат к переданному символу.
     /// </summary>
-    public bool IsApplicated(ClassifiedLetter letter) =>
+    public bool IsApplicated(IClassifiedLetter letter) =>
         applicableLetters.Contains(letter);
 }

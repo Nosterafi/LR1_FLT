@@ -2,12 +2,12 @@
 using LexicalMachine;
 using Transliteration;
 
-namespace UI;
+namespace LexicalAnalysis;
 
 /// <summary>
 /// Класс для создания и настройки лексического анализатора с предопределенными автоматами.
 /// </summary>
-internal static class AnalyzerCreator
+public static class AnalyzerCreator
 {
     /// <summary>
     /// Создает и настраивает лексический анализатор с автоматами для чисел и идентификаторов.

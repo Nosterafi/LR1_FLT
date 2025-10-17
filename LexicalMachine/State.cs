@@ -16,7 +16,7 @@ public class State
     /// <summary>
     /// Набор правил перехода из данного состояния.
     /// </summary>
-    public readonly Dictionary<ClassifiedLetter, State> Rules = [];
+    public readonly Dictionary<IClassifiedLetter, State> Rules = [];
 
     /// <summary>
     /// Указывает, является ли состояние принимающим (конечным).
